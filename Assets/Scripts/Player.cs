@@ -7,9 +7,7 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     private Vector3 targetPos;
     public Rigidbody MyRigidbody;
-
     Vector3 des;
-
     void Start()
     {
         targetPos = transform.position;
@@ -28,26 +26,24 @@ public class Player : MonoBehaviour
 
     public void FindTheDestination(Vector3 direction)
     {
-        RaycastHit[] hits;
+        RaycastHit oneHit;
         //hits = Physics.RaycastAll(transform.position, direction, 100f);
-        des = this.transform.position + (direction * 100f);
-        hits = Physics.RaycastAll(this.transform.position, direction, Mathf.Infinity, LayerMask.NameToLayer("Brick"));
+        //des = this.transform.position + (direction * 100f);
+        Vector3 startRayPos = this.transform.position;
         List<Collider> listBricks = new List<Collider>();
-        for(int i = 0; i < hits.Length; i++)
+        while(Physics.Raycast(startRayPos, direction, out oneHit))
         {
-            RaycastHit hit = hits[i];
-            Debug.LogError(hit.collider.name);
-            if(hit.collider.tag == "Brick")
+            Debug.Log(startRayPos);
+            if(oneHit.collider.tag == "Brick")
             {
+                listBricks.Add(oneHit.collider);
+                startRayPos = new Vector3(oneHit.transform.position.x, startRayPos.y, oneHit.transform.position.z) ;
                 
-
-                listBricks.Add(hit.collider);
-                Debug.Log("Wall's hit");
-                //MyRigidbody.isKinematic = true;
-                //MyRigidbody.velocity = Vector3.zero;
+                Debug.Log("Wall's hit: " + oneHit.transform.name);
             }
             else
             {
+                Debug.Log(oneHit.transform.name);
                 if(listBricks.Count > 0)
                 {
                     targetPos = new Vector3(listBricks[listBricks.Count - 1].transform.position.x, this.transform.position.y, listBricks[listBricks.Count - 1].transform.position.z);
