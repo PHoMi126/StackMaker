@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         targetPos = transform.position;
-        Invoke("Restart", 6);
+        Invoke("Restart", 5);
     }
 
     public void Move(Vector3 moveDirection)
