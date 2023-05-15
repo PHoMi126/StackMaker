@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     {
         //Debug.DrawLine(transform.position, des, Color.red);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        addBrick.transform.position = targetPos;
     }
 
     public void FindTheDestination(Vector3 direction)
