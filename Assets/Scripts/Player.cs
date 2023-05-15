@@ -7,14 +7,13 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed;
     [SerializeField] private Rigidbody MyRigidbody;
-    [SerializeField] private GameObject brick;
+    [SerializeField] private GameObject addBrick;
     private Vector3 targetPos;
     Vector3 des;
     RaycastHit oneHit;
     void Start()
     {
         targetPos = transform.position;
-        Invoke("Restart", 5);
     }
 
     public void Move(Vector3 moveDirection)
@@ -30,7 +29,6 @@ public class Player : MonoBehaviour
 
     public void FindTheDestination(Vector3 direction)
     {
-        
         //hits = Physics.RaycastAll(transform.position, direction, 100f);
         //des = this.transform.position + (direction * 100f);
         Vector3 startRayPos = this.transform.position;
@@ -42,8 +40,7 @@ public class Player : MonoBehaviour
             {
                 listBricks.Add(oneHit.collider);
                 startRayPos = new Vector3(oneHit.transform.position.x, startRayPos.y, oneHit.transform.position.z);
-                GameObject duplicate = Instantiate(brick);
-                brick.SetActive(true);
+                GameObject duplicate = Instantiate(addBrick);
 
                 Debug.Log("Wall's hit: " + oneHit.transform.name);
             }
@@ -52,17 +49,10 @@ public class Player : MonoBehaviour
                 Debug.Log(oneHit.transform.name);
                 if(listBricks.Count > 0)
                 {
-                    targetPos = new Vector3(listBricks[listBricks.Count - 1].transform.position.x, this.transform.position.y, listBricks[listBricks.Count - 1].transform.position.z);
+                    targetPos = new Vector3(listBricks[listBricks.Count - 1].transform.position.x, this.transform.position.y + 0.5f, listBricks[listBricks.Count - 1].transform.position.z);
                 }
                 break;
             }
-        }
-    }
-    void Restart()
-    {
-        if(oneHit.collider.tag == "WinPos")
-        {
-            SceneManager.LoadSceneAsync("SampleScene");
         }
     }
 }

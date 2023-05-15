@@ -6,12 +6,6 @@ public class BrickController : MonoBehaviour
 {
     [SerializeField] private GameObject brick;
 
-    // enum Bricks
-    // {
-    //     Normal,
-    //     Eat
-    // }
-
     private void OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player")
