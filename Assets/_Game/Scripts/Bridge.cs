@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bridge : MonoBehaviour
@@ -9,7 +7,7 @@ public class Bridge : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //unhide Mesh Renderer
-        if (other.tag == "Player") //other.gameObject.CompareTag("Player")
+        if (other.CompareTag("Player"))
         {
             if (bridge.GetComponent<MeshRenderer>().isVisible == false)
             {
