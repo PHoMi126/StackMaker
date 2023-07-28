@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float _moveSpeed;
+    public float _moveSpeed;
     [SerializeField] private Rigidbody _MyRigidbody;
     [SerializeField] private GameObject _addBrick;
     [SerializeField] private Transform _brickTransform;
@@ -11,7 +11,8 @@ public class Player : MonoBehaviour
     private Vector3 targetPos;
     //Vector3 des;
     RaycastHit oneHit;
-    GameObject duplicate;
+    GameObject duplicate, obj;
+    public List<GameObject> listBricks = new();
 
     void Start()
     {
@@ -32,29 +33,34 @@ public class Player : MonoBehaviour
 
     public void FindTheDestination(Vector3 direction)
     {
-        //hits = Physics.RaycastAll(transform.position, direction, 100f);
-        //des = this.transform.position + (direction * 100f);
         Vector3 startRayPos = this.transform.position;
-        List<Collider> listBricks = new(); //new List<Collider>()
+        List<Collider> rays = new(); //new List<Collider>()
         while (Physics.Raycast(startRayPos, direction, out oneHit))
         {
+            startRayPos = new Vector3(oneHit.transform.position.x, startRayPos.y, oneHit.transform.position.z);
             //Debug.Log(startRayPos);
-            if (oneHit.collider.CompareTag("Brick"))
+            if (oneHit.collider.CompareTag("BrickLine"))
             {
-                startRayPos = new Vector3(oneHit.transform.position.x, startRayPos.y, oneHit.transform.position.z);
                 duplicate = Instantiate(_addBrick, _brickTransform);
-                duplicate.transform.localPosition = new Vector3(0f, listBricks.Count * -0.35f, 0f);
+                duplicate.transform.position = new Vector3(targetPos.x, rays.Count * 0.5f, targetPos.z);
 
-                listBricks.Add(oneHit.collider);
-
+                rays.Add(oneHit.collider);
+                listBricks.Add(duplicate);
                 //Debug.Log("Wall's hit: " + oneHit.transform.name);
+            }
+            else if (oneHit.collider.CompareTag("BridgeLine"))
+            {
+                rays.Add(oneHit.collider);
+                obj = listBricks[listBricks.Count - 1];
+                listBricks.Remove(obj);
+                Destroy(obj);
             }
             else
             {
-                Debug.Log(oneHit.transform.name);
-                if (listBricks.Count > 0)
+                //Debug.Log(oneHit.transform.name);
+                if (rays.Count > 0)
                 {
-                    targetPos = new Vector3(listBricks[listBricks.Count - 1].transform.position.x, this.transform.position.y + .5f, listBricks[listBricks.Count - 1].transform.position.z);
+                    targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y + 0.5f, rays[rays.Count - 1].transform.position.z);
                 }
                 break;
             }

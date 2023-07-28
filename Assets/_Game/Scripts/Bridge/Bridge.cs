@@ -4,6 +4,11 @@ public class Bridge : MonoBehaviour
 {
     [SerializeField] private GameObject bridge;
 
+    private void Start()
+    {
+        bridge.GetComponent<MeshRenderer>().enabled = false;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         //unhide Mesh Renderer
