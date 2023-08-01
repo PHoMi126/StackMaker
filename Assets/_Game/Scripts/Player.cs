@@ -10,9 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private WinPos _winPos;
 
     private Vector3 targetPos;
-    //Vector3 des;
     RaycastHit oneHit;
-    GameObject duplicate, obj;
     public List<GameObject> listBricks = new();
 
     private void Awake()
@@ -26,16 +24,9 @@ public class Player : MonoBehaviour
         UIManager.instance.SetCoin(_winPos.coin);
     }
 
-    /* public void Move(Vector3 moveDirection)
-    {
-        targetPos += moveDirection;
-    } */
-
     private void Update()
     {
-        //Debug.DrawLine(transform.position, des, Color.red);
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
-        //_addBrick.transform.localPosition = targetPos;
     }
 
     public void FindTheDestination(Vector3 direction)
@@ -45,29 +36,34 @@ public class Player : MonoBehaviour
         while (Physics.Raycast(startRayPos, direction, out oneHit))
         {
             startRayPos = new Vector3(oneHit.transform.position.x, startRayPos.y, oneHit.transform.position.z);
-            //Debug.Log(startRayPos);
             if (oneHit.collider.CompareTag("BrickLine"))
             {
-                duplicate = Instantiate(_addBrick, _brickTransform);
+                GameObject duplicate = Instantiate(_addBrick, _brickTransform);
                 duplicate.transform.position = new Vector3(targetPos.x, rays.Count * 0.5f, targetPos.z);
 
                 rays.Add(oneHit.collider);
                 listBricks.Add(duplicate);
-                //Debug.Log("Wall's hit: " + oneHit.transform.name);
+                //targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y + 0.5f, rays[rays.Count - 1].transform.position.z);
             }
             else if (oneHit.collider.CompareTag("BridgeLine"))
             {
                 rays.Add(oneHit.collider);
-                obj = listBricks[listBricks.Count - 1];
+                GameObject obj = listBricks[listBricks.Count - 1];
                 listBricks.Remove(obj);
                 Destroy(obj);
+                //targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y - 0.5f, rays[rays.Count - 1].transform.position.z);
             }
+            else if (oneHit.collider.CompareTag("NoBrick"))
+            {
+                rays.Add(oneHit.collider);
+                //targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y, rays[rays.Count - 1].transform.position.z);
+            }
+            //break;
             else
             {
-                //Debug.Log(oneHit.transform.name);
                 if (rays.Count > 0)
                 {
-                    targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y + 0.5f, rays[rays.Count - 1].transform.position.z);
+                    targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y, rays[rays.Count - 1].transform.position.z);
                 }
                 break;
             }
