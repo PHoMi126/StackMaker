@@ -40,10 +40,10 @@ public class Player : MonoBehaviour
             {
                 GameObject duplicate = Instantiate(_addBrick, _brickTransform);
                 duplicate.transform.position = new Vector3(targetPos.x, rays.Count * 0.5f, targetPos.z);
-
+                Debug.Log(duplicate.transform.position);
                 rays.Add(oneHit.collider);
                 listBricks.Add(duplicate);
-                //targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y + 0.5f, rays[rays.Count - 1].transform.position.z);
+                transform.localPosition = new Vector3(targetPos.x, targetPos.y + 0.5f, targetPos.z);
             }
             else if (oneHit.collider.CompareTag("BridgeLine"))
             {
@@ -51,12 +51,12 @@ public class Player : MonoBehaviour
                 GameObject obj = listBricks[listBricks.Count - 1];
                 listBricks.Remove(obj);
                 Destroy(obj);
-                //targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y - 0.5f, rays[rays.Count - 1].transform.position.z);
+                transform.localPosition = new Vector3(targetPos.x, targetPos.y - 0.5f, targetPos.z);
             }
             else if (oneHit.collider.CompareTag("NoBrick"))
             {
                 rays.Add(oneHit.collider);
-                //targetPos = new Vector3(rays[rays.Count - 1].transform.position.x, this.transform.position.y, rays[rays.Count - 1].transform.position.z);
+                transform.localPosition = new Vector3(targetPos.x, targetPos.y, targetPos.z);
             }
             //break;
             else
