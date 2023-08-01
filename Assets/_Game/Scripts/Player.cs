@@ -39,11 +39,12 @@ public class Player : MonoBehaviour
             if (oneHit.collider.CompareTag("BrickLine"))
             {
                 GameObject duplicate = Instantiate(_addBrick, _brickTransform);
-                duplicate.transform.position = new Vector3(targetPos.x, rays.Count * 0.5f, targetPos.z);
-                Debug.Log(duplicate.transform.position);
+                duplicate.transform.localPosition = new Vector3(0f, listBricks.Count * -0.5f, 0f);
+                //Debug.Log(duplicate.transform.position);
                 rays.Add(oneHit.collider);
                 listBricks.Add(duplicate);
-                transform.localPosition = new Vector3(targetPos.x, targetPos.y + 0.5f, targetPos.z);
+                transform.localPosition = new Vector3(targetPos.x, targetPos.y + 1.155f, targetPos.z);
+                Debug.Log(transform.localPosition);
             }
             else if (oneHit.collider.CompareTag("BridgeLine"))
             {
