@@ -52,7 +52,7 @@ public class Player : MonoBehaviour
                 GameObject obj = listBricks[listBricks.Count - 1];
                 listBricks.Remove(obj);
                 Destroy(obj);
-                transform.localPosition = new Vector3(targetPos.x, targetPos.y - 0.5f, targetPos.z);
+                transform.localPosition = new Vector3(targetPos.x, targetPos.y - 6.155f, targetPos.z);
             }
             else if (oneHit.collider.CompareTag("NoBrick"))
             {
